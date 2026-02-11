@@ -916,14 +916,6 @@ function App() {
             <ToolsMenu
               onShowVariation={() => setShowVariationModal(true)}
               onShowSaveLoad={() => setShowSaveLoad(true)}
-              onShowComparison={() => setShowComparison(true)}
-              onShowPolicyComparison={() => setShowPolicyComparison(true)}
-              onShowDebtTimeline={() => setShowDebtTimeline(true)}
-              onShowResearchBibliography={() => setShowResearchBibliography(true)}
-              onShowMetaAnalysis={() => setShowMetaAnalysis(true)}
-              onShowAssumptionTimeline={() => setShowAssumptionTimeline(true)}
-              onShowDecisionTree={() => setShowDecisionTree(true)}
-              onShowCredits={() => setShowCredits(true)}
             />
             
             {state && <GreatPersonPanel state={state} />}
