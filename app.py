@@ -91,95 +91,25 @@ def is_vite_running(port=5173):
     return False
 
 if use_dev_server:
-    # Try to use Vite dev server (much better for development)
-    vite_port = 5173
-    vite_url = f"http://localhost:{vite_port}"
-    
-    if force_dev or is_vite_running(vite_port):
-        if debug_mode:
-            st.sidebar.success(f"✓ Vite dev server detected on port {vite_port}")
-        
-        # Embed Vite dev server via iframe
-        iframe_html = f'''
-        <iframe 
-            src="{vite_url}"
-            width="100%" 
-            height="900" 
-            frameborder="0"
-            style="border: none; width: 100%; height: 900px;"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; webgl">
-        </iframe>
-        '''
-        
-        components.html(iframe_html, height=900, scrolling=False)
-        
-        st.sidebar.info("💡 **Dev Mode**: React app running on Vite dev server with hot reload!")
-        st.sidebar.markdown(f"Direct link: [{vite_url}]({vite_url})")
-    else:
-        if debug_mode:
-            st.sidebar.write(f"**Port check results:**")
-            st.sidebar.write(f"- localhost:{vite_port}: {check_port('localhost', vite_port)}")
-            st.sidebar.write(f"- 127.0.0.1:{vite_port}: {check_port('127.0.0.1', vite_port)}")
-        st.sidebar.warning("⚠️ Vite dev server not running")
-        st.error("**Vite dev server not found**")
-        st.markdown(f"""
-        To start the dev server:
-        
-        1. Open a terminal
-        2. Run:
-        ```bash
-        cd frontend
-        npm run dev
-        ```
-        
-        3. Wait for it to start (usually on http://localhost:{vite_port})
-        4. Refresh this page
-        
-        Or uncheck "Use Dev Server" to use built static files instead.
-        """)
-        
-        if st.button("Retry Connection"):
-            st.rerun()
-
+    # Dev server path is currently disabled (use_dev_server=False).
+    pass
 else:
     # Fall back to static files (for production or when dev server unavailable)
     static_path = Path("static/index.html")
     if static_path.exists():
-        with open(static_path, 'r', encoding='utf-8') as f:
-            html = f.read()
-        
-        if debug_mode:
-            st.sidebar.write("**Using static files**")
-            assets_path = Path("static/assets")
-            if assets_path.exists():
-                st.sidebar.write("**JS files:**")
-                for asset_file in sorted(assets_path.glob("*.js")):
-                    st.sidebar.write(f"✓ {asset_file.name}")
-        
-        # Embed static HTML directly
-        iframe_html = f'''
-        <iframe 
-            srcdoc={html!r}
-            width="100%" 
-            height="900" 
-            frameborder="0"
-            style="border: none; width: 100%; height: 900px;"
-            sandbox="allow-scripts allow-same-origin"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; webgl">
-        </iframe>
-        '''
-        
-        components.html(iframe_html, height=900, scrolling=False)
-        
+        # In production, serve the built index.html via a URL so that all
+        # relative asset paths (./assets/...) resolve correctly.
+        static_url = "/static/index.html"
+        components.iframe(static_url, height=900, scrolling=False)
         st.sidebar.info("📦 **Production Mode**: Using built static files")
     else:
         st.error("⚠️ Static files not found")
         st.markdown("""
-        The React app needs to be built first. Run the build script:
+        The React app needs to be built first. Run the build script locally:
         
         **Windows:**
         ```powershell
-        scripts\build_and_copy.ps1
+        scripts\\build_and_copy.ps1
         ```
         
         **Unix/Mac:**
@@ -187,8 +117,5 @@ else:
         scripts/build_and_copy.sh
         ```
         
-        Then refresh this page.
-        
-        Or check "Use Dev Server" to use Vite dev server instead.
+        Then push the updated static/ directory to your repository and redeploy.
         """)
-        st.code("cd frontend && npm install && npm run build", language="bash")
