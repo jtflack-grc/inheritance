@@ -96,20 +96,49 @@ if use_dev_server:
 else:
     # Fall back to static files (for production or when dev server unavailable)
     static_path = Path("static/index.html")
-    if static_path.exists():
-        # Read the built HTML and rewrite relative asset paths so they load
-        # correctly from Streamlit's /static/ route.
-        with open(static_path, "r", encoding="utf-8") as f:
-            html = f.read()
+    assets_dir = Path("static/assets")
 
-        # Vite emits ./assets/... paths; rewrite them to /static/assets/...
-        html = html.replace('src="./assets/', 'src="/static/assets/')
-        html = html.replace('href="./assets/', 'href="/static/assets/')
-        # Also rewrite the favicon path if present
-        html = html.replace('href="/vite.svg"', 'href="/static/vite.svg"')
+    if static_path.exists() and assets_dir.exists():
+        # Find hashed asset filenames dynamically
+        try:
+            main_js = next(assets_dir.glob("index-*.js"))
+            globe_js = next(assets_dir.glob("globe-*.js"))
+            main_css = next(assets_dir.glob("index-*.css"))
+        except StopIteration:
+            st.error("⚠️ Could not locate built JS/CSS assets in static/assets/")
+        else:
+            # Read contents
+            main_js_code = main_js.read_text(encoding="utf-8")
+            globe_js_code = globe_js.read_text(encoding="utf-8")
+            main_css_code = main_css.read_text(encoding="utf-8")
 
-        components.html(html, height=900, scrolling=False)
-        st.sidebar.info("📦 **Production Mode**: Using built static files")
+            # Minimal HTML shell that inlines CSS and JS so we don't rely on
+            # Streamlit's /static/ asset serving or MIME types.
+            html = f"""
+            <!doctype html>
+            <html lang="en" style="background-color: #000000;">
+              <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Inheritance - an animal governance and risk simulator</title>
+                <style>
+                {main_css_code}
+                </style>
+              </head>
+              <body style="background-color: #000000; margin: 0; padding: 0;">
+                <div id="root"></div>
+                <script type="module">
+                {globe_js_code}
+                </script>
+                <script type="module">
+                {main_js_code}
+                </script>
+              </body>
+            </html>
+            """
+
+            components.html(html, height=900, scrolling=False)
+            st.sidebar.info("📦 **Production Mode**: Using inlined static assets")
     else:
         st.error("⚠️ Static files not found")
         st.markdown("""
