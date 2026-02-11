@@ -97,10 +97,18 @@ else:
     # Fall back to static files (for production or when dev server unavailable)
     static_path = Path("static/index.html")
     if static_path.exists():
-        # In production, serve the built index.html via a URL so that all
-        # relative asset paths (./assets/...) resolve correctly.
-        static_url = "/static/index.html"
-        components.iframe(static_url, height=900, scrolling=False)
+        # Read the built HTML and rewrite relative asset paths so they load
+        # correctly from Streamlit's /static/ route.
+        with open(static_path, "r", encoding="utf-8") as f:
+            html = f.read()
+
+        # Vite emits ./assets/... paths; rewrite them to /static/assets/...
+        html = html.replace('src="./assets/', 'src="/static/assets/')
+        html = html.replace('href="./assets/', 'href="/static/assets/')
+        # Also rewrite the favicon path if present
+        html = html.replace('href="/vite.svg"', 'href="/static/vite.svg"')
+
+        components.html(html, height=900, scrolling=False)
         st.sidebar.info("📦 **Production Mode**: Using built static files")
     else:
         st.error("⚠️ Static files not found")
