@@ -102,20 +102,30 @@ function App() {
     currentState: State
   } | null>(null)
   
-  // Check if mobile device (with safety check) - MUST be before any conditional returns
+  // Check if mobile / narrow desktop (with safety check) - MUST be before any conditional returns
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
       return window.innerWidth < 768
     }
     return false
   })
+  const [isNarrowDesktop, setIsNarrowDesktop] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const width = window.innerWidth
+      return width >= 768 && width < 1280
+    }
+    return false
+  })
 
-  // Keep isMobile in sync with viewport size (handles rotation / resize)
+  // Keep layout flags in sync with viewport size (handles rotation / resize)
   useEffect(() => {
     if (typeof window === 'undefined') return
     const handleResize = () => {
-      const nextIsMobile = window.innerWidth < 768
+      const width = window.innerWidth
+      const nextIsMobile = width < 768
+      const nextIsNarrowDesktop = width >= 768 && width < 1280
       setIsMobile(prev => (prev !== nextIsMobile ? nextIsMobile : prev))
+      setIsNarrowDesktop(prev => (prev !== nextIsNarrowDesktop ? nextIsNarrowDesktop : prev))
     }
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
@@ -771,7 +781,7 @@ function App() {
         <div 
           ref={decisionPanelRef}
           style={{ 
-            flex: isMobile ? '0 0 auto' : '0 0 480px',
+            flex: isMobile ? '0 0 auto' : isNarrowDesktop ? '0 0 400px' : '0 0 480px',
             width: isMobile ? '100%' : 'auto',
             maxHeight: isMobile ? '50vh' : 'none',
             padding: isMobile ? '16px' : '24px', 
@@ -801,8 +811,8 @@ function App() {
         {/* Left of Globe: Metrics Panel */}
         {!isMobile && (
           <div style={{ 
-            flex: '0 0 420px', 
-            padding: '24px', 
+            flex: isNarrowDesktop ? '0 0 340px' : '0 0 420px', 
+            padding: isNarrowDesktop ? '16px' : '24px', 
             borderRight: '1px solid rgba(255, 255, 255, 0.08)',
             overflowY: 'auto',
             backgroundColor: '#000000'
