@@ -30,16 +30,22 @@ export default function WelcomeModal({ onClose }: WelcomeModalProps) {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      padding: '16px',
+      boxSizing: 'border-box',
+      overflowY: 'auto',
       opacity: visible ? 1 : 0,
       transition: 'opacity 0.3s ease'
     }}>
       <div style={{
+        width: '100%',
         maxWidth: '700px',
-        padding: '40px',
+        maxHeight: '100%',
+        padding: '24px',
         backgroundColor: '#0a0a0a',
         borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)'
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)',
+        overflowY: 'auto'
       }}>
         {/* Header */}
         <div style={{
