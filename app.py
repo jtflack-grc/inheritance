@@ -2,12 +2,14 @@
 Streamlit app that embeds the React globe dashboard.
 
 For local development: Uses Vite dev server (port 5173)
-For production: Uses built static files from static/ directory
+For production / Streamlit Cloud: Uses built static files from static/ directory.
 """
+import os
+import socket
+from pathlib import Path
+
 import streamlit as st
 import streamlit.components.v1 as components
-from pathlib import Path
-import socket
 
 st.set_page_config(
     page_title="Inheritance - an animal governance and risk simulator",
@@ -59,10 +61,23 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+# Detect if we're running in a headless/cloud environment (e.g. Streamlit Cloud)
+IS_CLOUD = os.environ.get("STREAMLIT_RUNTIME") == "cloud" or os.environ.get(
+    "STREAMLIT_SERVER_HEADLESS", ""
+).lower() in ("1", "true")
+
 # Check if we should use dev server or static files
-use_dev_server = st.sidebar.checkbox("Use Dev Server (Vite)", value=True)
-force_dev = st.sidebar.checkbox("Force Dev Server (skip port check)", value=True)  # Default to True for easier dev
-debug_mode = st.sidebar.checkbox("Debug Mode", value=False)
+if IS_CLOUD:
+    # On Streamlit Cloud, always use static build (no localhost dev server).
+    use_dev_server = False
+    force_dev = False
+    debug_mode = False
+else:
+    use_dev_server = st.sidebar.checkbox("Use Dev Server (Vite)", value=True)
+    force_dev = st.sidebar.checkbox(
+        "Force Dev Server (skip port check)", value=True
+    )  # Default to True for easier dev locally
+    debug_mode = st.sidebar.checkbox("Debug Mode", value=False)
 
 def check_port(host, port):
     """Check if a port is open (dev server running)"""
