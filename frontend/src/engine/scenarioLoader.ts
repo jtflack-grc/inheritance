@@ -20,7 +20,8 @@ export async function loadScenario(forceReload: boolean = false): Promise<Scenar
   try {
     // Add cache-busting query parameter to force reload
     const cacheBuster = forceReload ? `?t=${Date.now()}` : ''
-    const response = await fetch(`/scenario.v1.json${cacheBuster}`)
+    // Use relative path so this works on GitHub Pages project pages
+    const response = await fetch(`scenario.v1.json${cacheBuster}`)
     if (!response.ok) {
       throw new Error(`Failed to load scenario: ${response.status}`)
     }

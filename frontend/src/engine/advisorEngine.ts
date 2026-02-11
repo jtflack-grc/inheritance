@@ -12,7 +12,8 @@ export async function loadAdvisors(): Promise<Advisor[]> {
   }
 
   try {
-    const response = await fetch('/advisors.json')
+    // Relative path so this works on GitHub Pages project pages
+    const response = await fetch('advisors.json')
     if (!response.ok) {
       throw new Error(`Failed to load advisors: ${response.status}`)
     }
@@ -34,7 +35,8 @@ export async function loadRecommendations(): Promise<Record<string, AdvisorRecom
   }
 
   try {
-    const response = await fetch('/advisorRecommendations.json')
+    // Relative path so this works on GitHub Pages project pages
+    const response = await fetch('advisorRecommendations.json')
     if (!response.ok) {
       throw new Error(`Failed to load recommendations: ${response.status}`)
     }

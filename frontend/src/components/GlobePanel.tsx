@@ -54,9 +54,9 @@ export default function GlobePanel({ regionValues, state, mapMode = 'welfareStan
   const [ringTooltipPosition, setRingTooltipPosition] = useState<{ x: number; y: number } | null>(null)
   const [clickedRegion, setClickedRegion] = useState<string | null>(null)
 
-  // Load GeoJSON dynamically
+  // Load GeoJSON dynamically (relative path so it works on GitHub Pages)
   useEffect(() => {
-    fetch('/world.geojson')
+    fetch('world.geojson')
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         return res.json()
@@ -70,11 +70,11 @@ export default function GlobePanel({ regionValues, state, mapMode = 'welfareStan
       })
   }, [])
 
-  // Load arcs and hubs data
+  // Load arcs and hubs data (relative paths for GitHub Pages)
   useEffect(() => {
     Promise.all([
-      fetch('/flows.json').then(r => r.json()),
-      fetch('/hubs.json').then(r => r.json())
+      fetch('flows.json').then(r => r.json()),
+      fetch('hubs.json').then(r => r.json())
     ]).then(([arcs, hubs]) => {
       setArcsData(arcs)
       setHubsData(hubs)
