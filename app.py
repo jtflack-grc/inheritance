@@ -61,23 +61,13 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Detect if we're running in a headless/cloud environment (e.g. Streamlit Cloud)
-IS_CLOUD = os.environ.get("STREAMLIT_RUNTIME") == "cloud" or os.environ.get(
-    "STREAMLIT_SERVER_HEADLESS", ""
-).lower() in ("1", "true")
-
-# Check if we should use dev server or static files
-if IS_CLOUD:
-    # On Streamlit Cloud, always use static build (no localhost dev server).
-    use_dev_server = False
-    force_dev = False
-    debug_mode = False
-else:
-    use_dev_server = st.sidebar.checkbox("Use Dev Server (Vite)", value=True)
-    force_dev = st.sidebar.checkbox(
-        "Force Dev Server (skip port check)", value=True
-    )  # Default to True for easier dev locally
-    debug_mode = st.sidebar.checkbox("Debug Mode", value=False)
+# For deployment (including Streamlit Cloud), always use the built static files.
+# Localhost dev-server embedding is disabled by default to avoid localhost:5173
+# references in production. If you want to re-enable it locally, you can add
+# back a sidebar checkbox and set use_dev_server=True.
+use_dev_server = False
+force_dev = False
+debug_mode = False
 
 def check_port(host, port):
     """Check if a port is open (dev server running)"""
