@@ -758,18 +758,6 @@ function App() {
         onShowCredits={() => setShowCredits(true)}
       />
       
-      {/* Learning Sidebar - Only show when data is loaded */}
-      {/* Temporarily disabled to debug black screen */}
-      {/* {!isMobile && scenario && state && currentNode && (
-        <LearningSidebar
-          node={currentNode}
-          state={state}
-          scenario={scenario}
-          isCollapsed={learningSidebarCollapsed}
-          onToggle={() => setLearningSidebarCollapsed(!learningSidebarCollapsed)}
-        />
-      )} */}
-
       {/* Main Content Area */}
       <div style={{ 
         display: 'flex', 
@@ -912,11 +900,7 @@ function App() {
               </div>
             )}
             
-            {/* Tools Menu */}
-            <ToolsMenu
-              onShowVariation={() => setShowVariationModal(true)}
-              onShowSaveLoad={() => setShowSaveLoad(true)}
-            />
+            {/* Tools Menu - disabled for stability (was causing rare black-screen issues) */}
             
             {state && <GreatPersonPanel state={state} />}
             {state && <WonderPanel state={state} />}
