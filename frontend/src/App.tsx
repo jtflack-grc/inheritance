@@ -109,6 +109,17 @@ function App() {
     }
     return false
   })
+
+  // Keep isMobile in sync with viewport size (handles rotation / resize)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const handleResize = () => {
+      const nextIsMobile = window.innerWidth < 768
+      setIsMobile(prev => (prev !== nextIsMobile ? nextIsMobile : prev))
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
   
   const handleTutorialClose = () => {
     setShowTutorial(false)
