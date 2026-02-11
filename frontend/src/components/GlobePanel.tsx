@@ -107,8 +107,8 @@ export default function GlobePanel({ regionValues, state, mapMode = 'welfareStan
 
   useEffect(() => {
     if (globeEl.current && worldData) {
-      // Closer view to reduce dead space
-      globeEl.current.pointOfView({ lat: 20, lng: 0, altitude: 1.8 }, 0)
+      // Closer, more centered view to reduce dead space
+      globeEl.current.pointOfView({ lat: 20, lng: 0, altitude: 1.4 }, 0)
       
       // Try to make the Globe background transparent
       // Wait a bit for the Globe to fully initialize
@@ -191,7 +191,7 @@ export default function GlobePanel({ regionValues, state, mapMode = 'welfareStan
         // @ts-ignore
         backgroundImageUrl=""
         style={{ position: 'absolute', zIndex: 1, top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'transparent' }}
-        globeRadius={75}
+        globeRadius={90}
         // Enhanced atmospheric glow with multiple layers
         // @ts-ignore
         atmosphereColor="#4a7fb8"
