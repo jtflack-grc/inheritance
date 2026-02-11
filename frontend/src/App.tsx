@@ -781,8 +781,8 @@ function App() {
         <div 
           ref={decisionPanelRef}
           style={{ 
-            // Slightly narrower columns on most laptops to leave room for the globe
-            flex: isMobile ? '0 0 auto' : isNarrowDesktop ? '0 0 360px' : '0 0 420px',
+            // Narrower decision column on laptops to leave room for the globe
+            flex: isMobile ? '0 0 auto' : isNarrowDesktop ? '0 0 320px' : '0 0 380px',
             width: isMobile ? '100%' : 'auto',
             maxHeight: isMobile ? '50vh' : 'none',
             padding: isMobile ? '16px' : '24px', 
@@ -812,9 +812,9 @@ function App() {
         {/* Left of Globe: Metrics Panel */}
         {!isMobile && (
           <div style={{ 
-            // Metrics column also slightly narrower on typical laptop widths
-            flex: isNarrowDesktop ? '0 0 300px' : '0 0 360px', 
-            padding: isNarrowDesktop ? '16px' : '20px', 
+            // Metrics column also narrower on typical laptop widths
+            flex: isNarrowDesktop ? '0 0 260px' : '0 0 320px', 
+            padding: isNarrowDesktop ? '14px' : '18px', 
             borderRight: '1px solid rgba(255, 255, 255, 0.08)',
             overflowY: 'auto',
             backgroundColor: '#000000'
