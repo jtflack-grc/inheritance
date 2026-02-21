@@ -800,8 +800,8 @@ function App() {
         {/* Left of Globe: Metrics Panel */}
         {!isMobile && (
           <div style={{ 
-            // Metrics column also narrower on typical laptop widths
-            flex: isNarrowDesktop ? '0 0 260px' : '0 0 320px', 
+            // Wide enough for Standards/Debt/Enforcement buttons in one row
+            flex: isNarrowDesktop ? '0 0 320px' : '0 0 380px', 
             padding: isNarrowDesktop ? '14px' : '18px', 
             borderRight: '1px solid rgba(255, 255, 255, 0.08)',
             overflowY: 'auto',
