@@ -807,20 +807,22 @@ function App() {
             overflowY: 'auto',
             backgroundColor: '#000000'
           }}>
-            {/* Map Mode Selector - Premium Styling */}
+            {/* Map Mode Selector - matches app button highlighting */}
             {state && (
-              <div style={{ marginBottom: '24px' }}>
-                <div style={{ 
-                  fontSize: '11px', 
-                  color: '#888', 
+              <div style={{ marginBottom: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{
+                  fontSize: '11px',
+                  color: '#888',
                   marginBottom: '12px',
                   textTransform: 'uppercase',
                   letterSpacing: '0.5px',
-                  fontWeight: 600
+                  fontWeight: 600,
+                  alignSelf: 'stretch',
+                  textAlign: 'center'
                 }}>
                   Map View
                 </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
                   {(['welfareStandards', 'welfareDebt', 'enforcement'] as const).map(mode => {
                     const isActive = state?.map?.mode === mode
                     const label = mode === 'welfareStandards' ? 'Standards' : mode === 'welfareDebt' ? 'Debt' : 'Enforcement'
@@ -830,69 +832,32 @@ function App() {
                         onClick={() => dispatch({ type: 'SET_MAP_MODE', payload: { mode } })}
                         onMouseEnter={(e) => {
                           if (!isActive) {
-                            e.currentTarget.style.backgroundColor = 'rgba(96, 165, 250, 0.1)'
-                            e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.5)'
-                            e.currentTarget.style.transform = 'translateY(-1px)'
-                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(96, 165, 250, 0.2)'
+                            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
+                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (!isActive) {
-                            e.currentTarget.style.backgroundColor = 'rgba(30, 30, 30, 0.95)'
-                            e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.3)'
-                            e.currentTarget.style.transform = 'translateY(0)'
-                            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+                            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'
+                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
                           }
                         }}
                         style={{
-                          flex: 1,
-                          minWidth: 0,
-                          padding: '14px 12px',
+                          padding: '12px 16px',
                           fontSize: '12px',
                           fontWeight: 600,
-                          background: isActive
-                            ? 'linear-gradient(135deg, rgba(96, 165, 250, 0.25) 0%, rgba(139, 92, 246, 0.2) 100%)'
-                            : 'linear-gradient(135deg, rgba(30, 30, 30, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%)',
+                          backgroundColor: isActive ? 'rgba(96, 165, 250, 0.2)' : 'rgba(255, 255, 255, 0.05)',
                           color: '#ffffff',
-                          border: isActive
-                            ? '2px solid rgba(96, 165, 250, 0.6)'
-                            : '2px solid rgba(96, 165, 250, 0.3)',
-                          borderRadius: '10px',
+                          border: `2px solid ${isActive ? '#60a5fa' : 'rgba(255, 255, 255, 0.1)'}`,
+                          borderRadius: '8px',
                           cursor: 'pointer',
                           textTransform: 'capitalize',
-                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                          boxShadow: isActive
-                            ? '0 4px 16px rgba(96, 165, 250, 0.3), 0 0 24px rgba(96, 165, 250, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                            : '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                          transition: 'all 0.2s ease',
                           textAlign: 'center',
-                          letterSpacing: '0.3px',
-                          position: 'relative',
-                          overflow: 'hidden',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
+                          letterSpacing: '0.3px'
                         }}
                       >
-                        {/* Subtle glow effect for active state */}
-                        {isActive && (
-                          <div style={{
-                            position: 'absolute',
-                            inset: 0,
-                            background: 'radial-gradient(circle at center, rgba(96, 165, 250, 0.2) 0%, transparent 70%)',
-                            pointerEvents: 'none'
-                          }} />
-                        )}
-                        <span style={{ 
-                          position: 'relative', 
-                          zIndex: 1, 
-                          display: 'block',
-                          textAlign: 'center',
-                          width: '100%',
-                          padding: '0 4px',
-                          boxSizing: 'border-box'
-                        }}>
-                          {label}
-                        </span>
+                        {label}
                       </button>
                     )
                   })}
