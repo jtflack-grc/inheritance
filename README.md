@@ -90,13 +90,6 @@ This simulator is based on research from:
 
 See `ANIMAL_WELFARE_METRICS.md` for detailed metric definitions and citations.
 
-## Documentation
-
-- `AUTHORING_COOKBOOK.md` - Guide for creating new scenarios
-- `ENGINE_INVARIANTS.md` - Core engine rules and invariants
-- `VISUAL_SEMANTICS.md` - Globe visualization meaning
-- `INTERPRETATION_BOUNDARIES.md` - What this tool is and isn't
-- `ANIMAL_WELFARE_METRICS.md` - Metric definitions and research citations
 
 
 ## License
